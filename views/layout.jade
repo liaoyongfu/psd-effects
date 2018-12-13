@@ -1,0 +1,81 @@
+doctype html
+html
+    head
+        title= title
+        link(rel="stylesheet", href="/node_modules/bootstrap/dist/css/bootstrap.css")
+        link(rel="stylesheet", href="/node_modules/font-awesome/css/font-awesome.css")
+        link(rel="stylesheet", href="/node_modules/imageviewer/dist/viewer.css")
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel="stylesheet", href="/lib/ajaxloading/css/loading.css")
+        script(src="/node_modules/jquery/dist/jquery.min.js")
+        script(src="/node_modules/imageviewer/dist/viewer.js")
+        script(src="/node_modules/bootstrap/dist/js/bootstrap.min.js")
+        script(src="/lib/ajaxloading/index.js")
+        script(src="/javascripts/home.js")
+        block head
+    body
+        include bootstrap/modal
+        h1.title UI设计效果图展示平台
+        if user.userName
+            p 欢迎光临！#{user.userName}!
+        ul.nav.main-nav
+            li.nav-item
+                a(href="/", class="nav-link active") 首页
+            li.nav-item
+                if !user.userName
+                    a(href="#", class="nav-link", data-toggle="modal", data-target="#loginModal") 登录
+                else
+                    a(href="/users/logout", class="nav-link") 注销
+            if !user.userName
+                li.nav-item
+                    a(href="#", class="nav-link", data-toggle="modal", data-target="#registryModal") 注册
+            li.nav-item
+                a(href="#", class="nav-link", data-toggle="modal", data-target="#helpModal") 帮助
+        block content
+
+        +modal("用户登录", "loginModal")
+            form(id="loginForm")
+                .modal-body
+                    .form-group
+                        label 用户名:
+                        input.form-control(type="text", id="loginName", autocomplete="off")
+                    .form-group
+                        label 密码:
+                        input.form-control(type="password",  id="loginPassword", autocomplete="off")
+                    .login-error-msg.text-danger
+                .modal-footer
+                    button.btn.btn-primary(type="submit", id="loginBtn") 登录
+                    button.btn.btn-default(type="button", data-dismiss="modal") 关闭
+
+        +modal("注册用户", "registryModal")
+            form(action="/registry", id="registryForm", method="post")
+                .modal-body
+                        .form-group
+                            label 用户名:
+                            input.form-control(type="text", id="registryUserName", autocomplete="off")
+                            small.form-text.text-muted 请使用中文名称注册！
+                        .form-group
+                            label 密码:
+                            input.form-control(type="password", id="password", autocomplete="off")
+                        .form-group
+                            label 确认密码:
+                            input.form-control(type="password", id="rePassword", autocomplete="off")
+                        .error-msg.text-danger
+                .modal-footer
+                    button.btn.btn-primary(type="submit", id="registryBtn") 注册
+                    button.btn.btn-default(type="button", data-dismiss="modal") 关闭
+
+
+        +modal("帮助手册", "helpModal")
+            .modal-body
+                .list-group
+                    .list-group-item 1. 用户可以注册、登录本平台
+                    .list-group-item 2. 登录用户可以添加SVN工程，如果选择对外开放，游客可以查看，私有工程只有创建者可以删除、编辑
+                    .list-group-item 3. 公共工程访问路径为：/project/{项目英文名称}，私有工程访问路径为16位随机码，只有创建者才知道
+            .modal-footer
+                button.btn.btn-default(type="button", data-dismiss="modal") 关闭
+
+
+
+
+

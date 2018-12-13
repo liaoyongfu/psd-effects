@@ -1,0 +1,1 @@
+mongoimport --host=127.0.0.1 --db rendering --collection users --file ./db//users.json --jsonArray

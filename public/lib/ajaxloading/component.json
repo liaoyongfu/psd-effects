@@ -1,0 +1,16 @@
+{
+  "name": "ajaxloading",
+  "version": "1.1.0",
+  "description": "页面加载中插件",
+  "main": "index.js",
+  "repos": "http://192.168.0.62:88/seeds/ajaxloading",
+  "svn": "http://192.168.0.222:8080/UI/SFE/development/source/components/ajaxloading",
+  "author": {
+    "name": "liaoyf",
+    "home": "http://192.168.0.62:88/u/liaoyf"
+  },
+  "dependencies": [
+    "react@^0.14.2",
+    "react-dom@^0.14.2"
+  ]
+}

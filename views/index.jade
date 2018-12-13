@@ -1,0 +1,71 @@
+extends layout
+
+block content
+    if user.userName
+        button.btn.btn-success.btn-addsvn(data-toggle="modal", data-target="#addSvnModal") 添加svn
+
+    if !has
+        p.no-data 暂无项目！
+    else
+        ul.projects
+            each item in data
+                if item.isPublic === 'true' || item.userName === user.userName
+                    li(data-id="#{item._id}")
+                        // 如果是公开，访问路径为项目名称，如果非公开，访问路径
+                        a.btn.btn-outline-primary.btn-sm.btn-tool.btn-review(role="button", href="/project/#{item.random}") 查看效果图
+                        if user.userName === item.userName
+                            button.btn.btn-outline-danger.btn-sm.btn-tool.btn-remove 删除
+                            button.btn.btn-outline-info.btn-sm.btn-tool.btn-edit(data-toggle="modal", data-target="#addSvnModal") 编辑
+                        .project-zh-name
+                            span 项目中文名称：
+                            em #{item.zhName}
+                        .project-en-name
+                            span 项目英文名称：
+                            em #{item.enName}
+                        .project-svn
+                            span 项目SVN地址：
+                            em #{item.svn}
+                        .project-user-name
+                            span 上传者：
+                            em #{item.userName}
+                        if user.userName
+                            .project-svn-user-name(style="display: none")
+                                span svn账号：
+                                em #{item.svnUserName}
+                            .project-svn-password(style="display: none")
+                                span svn密码：
+                                em #{item.svnPassword}
+                            .project-is-public
+                                span 是否公开：
+                                em #{item.isPublic === 'true' ? '是' : '否'}
+
+
+    +modal("添加svn", "addSvnModal")
+        form(id="addSvnForm")
+            .modal-body
+                p.text-info 注意：添加svn项目时视项目大小，请耐心等待^_^！
+                .form-group
+                    label SVN地址:
+                    input.form-control(type="text", placeholder="svn地址", id="svn", autocomplete="off")
+                .form-group
+                    label 项目中文名称:
+                    input.form-control(type="text", placeholder="项目名称", id="zhName", autocomplete="off")
+                .form-group
+                    label 项目英文名称(
+                    mark 需要唯一，不要包含空格):
+                    input.form-control(type="text", placeholder="项目名称", id="enName", autocomplete="off")
+                .form-group.form-check
+                    input.form-check-input(type="checkbox", id="isPublic")
+                    label.form-check-label(for="isPublic") 是否公开
+                .form-group.svn-zh
+                    label SVN账号:
+                    input.form-control(type="text", placeholder="项目名称", id="svnUserName", autocomplete="off")
+                .form-group.svn-mm
+                    label SVN密码:
+                    input.form-control(type="text", placeholder="项目名称", id="svnPassword", autocomplete="off")
+                input(type="hidden", id="userName", value="#{user.userName}")
+                .add-svn-error-msg.text-danger
+            .modal-footer
+                button.btn.btn-primary(type="submit", id="addSvnBtn") 确定
+                //button.btn.btn-default(type="button", id="resetBtn") 重置
+                button.btn.btn-default(type="button", data-dismiss="modal") 关闭

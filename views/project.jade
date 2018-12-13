@@ -1,0 +1,38 @@
+extends layout
+
+block head
+    script(src="../javascripts/project.js")
+block content
+    h5 项目详细信息
+    ul
+        li
+            span SVN地址：
+            | #{info.svn}
+        li
+            span 中文名称：
+            | #{info.zhName}
+        li
+            span 英文名称：
+            | #{info.enName}
+        li
+            span 上传者：
+            | #{info.userName}
+
+    h5 效果图文件
+    .folder-btns
+        button.return-root.btn.btn-outline-success.btn-sm 返回根目录
+        button.return-back.btn.btn-outline-success.btn-sm 返回上一层
+    div
+        ul.project-folder.clearfix
+            if files.length == 0
+                p.no-data 暂无项目！
+            each item in files
+                li(title="#{item.name}", class="item-#{item.type}")
+                    if item.type === 'folder'
+                        div.top
+                            i.fa.fa-folder
+                        span= item.name
+                    else if item.type === 'image'
+                        div.top
+                            img(src="#{item.path}")
+                        span= item.name
